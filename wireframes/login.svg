@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900"
+     viewBox="0 0 1440 900" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- Page background -->
+  <rect x="0" y="0" width="1440" height="900" fill="#ffffff"/>
+
+  <!-- ===== Left brand panel ===== -->
+  <rect x="0" y="0" width="720" height="900" fill="#d9d9d9"/>
+
+  <!-- Logo mark + wordmark -->
+  <rect x="72" y="72" width="40" height="40" rx="10" fill="#9e9e9e"/>
+  <rect x="124" y="84" width="110" height="18" rx="4" fill="#9e9e9e"/>
+  <text x="124" y="128" font-size="12" fill="#6b6b6b">LOGO / "Fainext"</text>
+
+  <!-- Headline placeholder lines -->
+  <rect x="72" y="300" width="520" height="26" rx="4" fill="#bdbdbd"/>
+  <rect x="72" y="340" width="380" height="26" rx="4" fill="#bdbdbd"/>
+  <text x="72" y="392" font-size="13" fill="#6b6b6b">Headline / welcome message</text>
+
+  <!-- Body copy placeholder lines -->
+  <rect x="72" y="420" width="500" height="12" rx="3" fill="#cfcfcf"/>
+  <rect x="72" y="444" width="500" height="12" rx="3" fill="#cfcfcf"/>
+  <rect x="72" y="468" width="330" height="12" rx="3" fill="#cfcfcf"/>
+
+  <!-- Bullet list -->
+  <circle cx="79" cy="528" r="7" fill="#9e9e9e"/>
+  <rect x="98" y="521" width="300" height="12" rx="3" fill="#cfcfcf"/>
+  <circle cx="79" cy="562" r="7" fill="#9e9e9e"/>
+  <rect x="98" y="555" width="260" height="12" rx="3" fill="#cfcfcf"/>
+  <circle cx="79" cy="596" r="7" fill="#9e9e9e"/>
+  <rect x="98" y="589" width="280" height="12" rx="3" fill="#cfcfcf"/>
+  <text x="72" y="636" font-size="13" fill="#6b6b6b">Key benefits list</text>
+
+  <!-- Footer line -->
+  <rect x="72" y="800" width="240" height="10" rx="3" fill="#c4c4c4"/>
+
+  <!-- ===== Right form panel ===== -->
+  <rect x="720" y="0" width="720" height="900" fill="#f2f2f2"/>
+
+  <!-- Form card -->
+  <rect x="880" y="190" width="400" height="520" rx="12" fill="#ffffff" stroke="#c4c4c4"/>
+
+  <!-- Card logo -->
+  <rect x="912" y="222" width="28" height="28" rx="7" fill="#9e9e9e"/>
+  <rect x="950" y="230" width="80" height="14" rx="3" fill="#9e9e9e"/>
+
+  <!-- Title + subtitle -->
+  <rect x="912" y="276" width="120" height="20" rx="4" fill="#bdbdbd"/>
+  <text x="1040" y="292" font-size="12" fill="#6b6b6b">"Sign in"</text>
+  <rect x="912" y="308" width="280" height="10" rx="3" fill="#d6d6d6"/>
+
+  <!-- Email field -->
+  <rect x="912" y="350" width="90" height="10" rx="3" fill="#bdbdbd"/>
+  <rect x="912" y="368" width="336" height="42" rx="8" fill="#fafafa" stroke="#c4c4c4"/>
+  <text x="928" y="394" font-size="13" fill="#9e9e9e">Email address</text>
+
+  <!-- Password field + Show/Hide toggle -->
+  <rect x="912" y="428" width="76" height="10" rx="3" fill="#bdbdbd"/>
+  <rect x="912" y="446" width="336" height="42" rx="8" fill="#fafafa" stroke="#c4c4c4"/>
+  <text x="928" y="472" font-size="13" fill="#9e9e9e">Password</text>
+  <rect x="1190" y="457" width="46" height="20" rx="5" fill="#e0e0e0"/>
+  <text x="1199" y="471" font-size="11" fill="#6b6b6b">Show</text>
+
+  <!-- Inline error text slot -->
+  <text x="912" y="506" font-size="11" fill="#9e9e9e">(inline error text appears here)</text>
+
+  <!-- Remember me + forgot password -->
+  <rect x="912" y="528" width="16" height="16" rx="3" fill="#ffffff" stroke="#9e9e9e"/>
+  <rect x="938" y="532" width="90" height="10" rx="3" fill="#cfcfcf"/>
+  <rect x="1140" y="532" width="108" height="10" rx="3" fill="#cfcfcf"/>
+  <text x="938" y="562" font-size="11" fill="#6b6b6b">Remember me</text>
+  <text x="1140" y="562" font-size="11" fill="#6b6b6b">Forgot password?</text>
+
+  <!-- Primary button -->
+  <rect x="912" y="586" width="336" height="46" rx="8" fill="#9e9e9e"/>
+  <text x="1051" y="615" font-size="14" fill="#ffffff">Sign in</text>
+
+  <!-- Switch to register -->
+  <rect x="972" y="658" width="216" height="10" rx="3" fill="#d6d6d6"/>
+  <text x="972" y="688" font-size="11" fill="#6b6b6b">Don't have an account? Sign up</text>
+
+  <!-- Screen label -->
+  <text x="720" y="868" font-size="12" fill="#9e9e9e" text-anchor="middle">
+    WIREFRAME - LOGIN SCREEN (1440 x 900)
+  </text>
+</svg>
