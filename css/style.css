@@ -80,3 +80,91 @@ img, svg { max-width: 100%; }
 .logo--light { color: #fff; }
 .logo--light .logo-mark { background: var(--accent); color: var(--primary-dark); }
 
+/* ==========================================================================
+   AUTH PAGES (login + register)
+   ========================================================================== */
+.auth {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* Left blue brand panel */
+.auth-brand {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: #fff;
+  background: linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+.auth-brand h1 { font-size: 2rem; margin-top: 1.5rem; }
+.auth-brand p { max-width: 42ch; color: rgba(255, 255, 255, .85); }
+
+.auth-points { list-style: none; margin: 1.25rem 0 0; padding: 0; }
+.auth-points li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: .6rem;
+  color: rgba(255, 255, 255, .9);
+}
+.auth-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .45em;
+  width: .6rem;
+  height: .6rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Decorative circle in the brand panel */
+.auth-brand::after {
+  content: "";
+  position: absolute;
+  right: -90px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(244, 180, 0, .14);
+}
+
+.auth-brand-footer {
+  margin-top: auto;
+  font-size: .8rem;
+  color: rgba(255, 255, 255, .6);
+}
+
+/* Right form side */
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+  background: var(--bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.auth-card .logo { margin-bottom: 1.25rem; }
+.auth-card h2 { font-size: 1.4rem; }
+.auth-card .subtitle { margin: 0 0 1.5rem; color: var(--text-muted); font-size: .9rem; }
+
+.auth-switch {
+  margin: 1.25rem 0 0;
+  text-align: center;
+  font-size: .9rem;
+  color: var(--text-muted);
+}
+
