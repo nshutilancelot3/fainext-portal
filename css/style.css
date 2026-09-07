@@ -168,3 +168,171 @@ img, svg { max-width: 100%; }
   color: var(--text-muted);
 }
 
+/* --- Forms --------------------------------------------------------------- */
+.field { margin-bottom: 1rem; }
+
+.field label {
+  display: block;
+  margin-bottom: .35rem;
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="password"],
+.field input[type="date"],
+.field select {
+  width: 100%;
+  padding: .65rem .75rem;
+  font: inherit;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(11, 83, 148, .12);
+}
+
+.field input.invalid { border-color: var(--red); }
+
+/* Red error text under each field */
+.error-text {
+  display: block;
+  min-height: 1rem;
+  margin-top: .3rem;
+  font-size: .78rem;
+  color: var(--red);
+}
+
+.hint { font-size: .78rem; color: var(--text-muted); }
+
+/* Password input + Show/Hide toggle */
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 4.2rem; }
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: .5rem;
+  transform: translateY(-50%);
+  padding: .25rem .45rem;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.toggle-password:hover { background: rgba(11, 83, 148, .08); }
+
+/* Checkbox rows */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .86rem;
+}
+.check-row input { width: 16px; height: 16px; accent-color: var(--primary); }
+
+.form-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1.1rem;
+}
+
+.link-button {
+  padding: 0;
+  font: inherit;
+  font-size: .86rem;
+  color: var(--primary);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.link-button:hover { text-decoration: underline; }
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .65rem 1.1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s, transform .05s;
+}
+.btn:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn--block { width: 100%; }
+
+.btn--ghost {
+  color: var(--primary);
+  background: #fff;
+  border-color: var(--border);
+}
+.btn--ghost:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+.btn--accent {
+  color: #2b2000;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.btn--accent:hover { background: #d9a000; border-color: #d9a000; }
+
+.btn--sm { padding: .45rem .75rem; font-size: .85rem; }
+
+/* --- Alerts -------------------------------------------------------------- */
+.alert {
+  margin-bottom: 1rem;
+  padding: .7rem .85rem;
+  font-size: .87rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+.alert--error  { color: var(--red);   background: var(--red-bg);   border-color: #f5c6c4; }
+.alert--success{ color: var(--green); background: var(--green-bg); border-color: #b7e1c4; }
+.alert--info   { color: var(--primary); background: #e8f0fa;      border-color: #c3d8ef; }
+
+/* Utility to hide elements until needed */
+[hidden] { display: none !important; }
+
+/* --- Password strength bar ---------------------------------------------- */
+.strength { margin-top: .45rem; }
+.strength-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.strength-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--red);
+  transition: width .2s, background .2s;
+}
+.strength-fill.weak   { width: 33%;  background: var(--red); }
+.strength-fill.medium { width: 66%;  background: #f59e0b; }
+.strength-fill.strong { width: 100%; background: var(--green); }
+.strength-label { margin-top: .25rem; font-size: .76rem; color: var(--text-muted); }
+
