@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in &middot; Fainext Client Portal</title>
+  <meta name="description" content="Fainext client portal - sign in to your account.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Two-column auth layout: brand panel + login form -->
+  <main class="auth">
+
+    <!-- Left: blue brand panel -->
+    <section class="auth-brand">
+      <a class="logo logo--light" href="index.html">
+        <span class="logo-mark"></span> Fainext
+      </a>
+
+      <h1>Welcome back to your client portal</h1>
+      <p>
+        Track your balance, follow every payment and download statements -
+        all in one place, built for businesses and individuals in Rwanda.
+      </p>
+
+      <ul class="auth-points">
+        <li>MTN MoMo, Airtel Money, bank and card payments</li>
+        <li>Instant transaction search and filters</li>
+        <li>Statements you can export in one click</li>
+      </ul>
+
+      <p class="auth-brand-footer">&copy; 2026 Fainext Ltd &middot; Kigali, Rwanda</p>
+    </section>
+
+    <!-- Right: white card with the form -->
+    <section class="auth-form-side">
+      <div class="auth-card">
+        <a class="logo" href="index.html">
+          <span class="logo-mark"></span> Fainext
+        </a>
+
+        <h2>Sign in</h2>
+        <p class="subtitle">Enter your details to access your dashboard.</p>
+
+        <!-- Page-level alert (invalid login / forgot password notice) -->
+        <div id="login-alert" class="alert" hidden></div>
+
+        <form id="login-form" novalidate>
+          <!-- Email -->
+          <div class="field">
+            <label for="login-email">Email address</label>
+            <input type="email" id="login-email" name="email"
+                   placeholder="you@example.com" autocomplete="email">
+            <span class="error-text" id="login-email-error"></span>
+          </div>
+
+          <!-- Password with Show/Hide toggle -->
+          <div class="field">
+            <label for="login-password">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="login-password" name="password"
+                     placeholder="Your password" autocomplete="current-password">
+              <button type="button" class="toggle-password"
+                      data-target="login-password" aria-label="Show password">Show</button>
+            </div>
+            <span class="error-text" id="login-password-error"></span>
+          </div>
+
+          <!-- Remember me + forgot password -->
+          <div class="form-row-between">
+            <label class="check-row" for="login-remember">
+              <input type="checkbox" id="login-remember" name="remember">
+              Remember me
+            </label>
+            <a href="#" id="forgot-link" class="link-button">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="login-submit" class="btn btn--block">Sign in</button>
+        </form>
+
+        <p class="auth-switch">
+          Don't have an account? <a href="register.html">Sign up</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
