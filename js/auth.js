@@ -88,3 +88,41 @@ function getInitials(fullName) {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
+/* ==========================================================================
+   Password hashing - SHA-256 through the Web Crypto API
+   A small fallback keeps the demo working where crypto.subtle is unavailable
+   (for example some browsers on a plain file:// page).
+   ========================================================================== */
+function hashPassword(password) {
+  var hasSubtle = typeof crypto !== "undefined" &&
+                  crypto.subtle &&
+                  typeof crypto.subtle.digest === "function";
+
+  if (!hasSubtle) {
+    return Promise.resolve("fallback$" + simpleHash(password));
+  }
+
+  var bytes = new TextEncoder().encode(password);
+  return crypto.subtle.digest("SHA-256", bytes)
+    .then(function (buffer) {
+      return Array.prototype.map
+        .call(new Uint8Array(buffer), function (b) {
+          return b.toString(16).padStart(2, "0");
+        })
+        .join("");
+    })
+    .catch(function () {
+      return "fallback$" + simpleHash(password);
+    });
+}
+
+/* Non-cryptographic fallback (demo safety net, not real security). */
+function simpleHash(text) {
+  var h1 = 0x811c9dc5, h2 = 0x01000193;
+  for (var i = 0; i < text.length; i++) {
+    h1 = (h1 ^ text.charCodeAt(i)) * 16777619 >>> 0;
+    h2 = (h2 + text.charCodeAt(i) * (i + 7)) >>> 0;
+  }
+  return h1.toString(16) + h2.toString(16);
+}
+
