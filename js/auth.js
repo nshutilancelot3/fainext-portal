@@ -126,3 +126,87 @@ function simpleHash(text) {
   return h1.toString(16) + h2.toString(16);
 }
 
+/* ==========================================================================
+   Validation rules
+   ========================================================================== */
+var EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+var RW_PHONE_PATTERN = /^07\d{8}$/;          /* Rwandan mobile: 07 + 8 digits */
+
+function isValidEmail(value) {
+  return EMAIL_PATTERN.test(String(value).trim());
+}
+
+function isValidRwandanPhone(value) {
+  return RW_PHONE_PATTERN.test(String(value).trim());
+}
+
+/* Password must be 8+ characters with at least one uppercase letter and one number. */
+function checkPasswordRules(password) {
+  var value = String(password);
+  if (value.length < 8) { return "Password must be at least 8 characters"; }
+  if (!/[A-Z]/.test(value)) { return "Password must include 1 uppercase letter"; }
+  if (!/[0-9]/.test(value)) { return "Password must include 1 number"; }
+  return "";
+}
+
+/* Score 0-4 -> weak / medium / strong */
+function passwordStrength(password) {
+  var value = String(password);
+  if (!value) { return { level: "", label: "" }; }
+
+  var score = 0;
+  if (value.length >= 8) { score++; }
+  if (value.length >= 12) { score++; }
+  if (/[A-Z]/.test(value) && /[a-z]/.test(value)) { score++; }
+  if (/[0-9]/.test(value)) { score++; }
+  if (/[^A-Za-z0-9]/.test(value)) { score++; }
+
+  if (score <= 2) { return { level: "weak", label: "Weak password" }; }
+  if (score <= 3) { return { level: "medium", label: "Medium strength" }; }
+  return { level: "strong", label: "Strong password" };
+}
+
+/* ==========================================================================
+   Small form UI helpers
+   ========================================================================== */
+
+/* Show or clear the red error text under one field. */
+function setFieldError(inputId, message) {
+  var input = document.getElementById(inputId);
+  var error = document.getElementById(inputId + "-error");
+  if (error) { error.textContent = message || ""; }
+  if (input) {
+    if (message) { input.classList.add("invalid"); }
+    else { input.classList.remove("invalid"); }
+  }
+}
+
+/* Show a page-level alert box. */
+function showAlert(elementId, message, kind) {
+  var box = document.getElementById(elementId);
+  if (!box) { return; }
+  box.textContent = message;
+  box.className = "alert alert--" + (kind || "info");
+  box.hidden = false;
+}
+
+function hideAlert(elementId) {
+  var box = document.getElementById(elementId);
+  if (box) { box.hidden = true; box.textContent = ""; }
+}
+
+/* Wire up every Show/Hide password button on the page. */
+function initPasswordToggles() {
+  var buttons = document.querySelectorAll(".toggle-password");
+  Array.prototype.forEach.call(buttons, function (button) {
+    button.addEventListener("click", function () {
+      var input = document.getElementById(button.getAttribute("data-target"));
+      if (!input) { return; }
+      var hidden = input.type === "password";
+      input.type = hidden ? "text" : "password";
+      button.textContent = hidden ? "Hide" : "Show";
+      button.setAttribute("aria-label", hidden ? "Hide password" : "Show password");
+    });
+  });
+}
+
