@@ -210,3 +210,107 @@ function initPasswordToggles() {
   });
 }
 
+/* ==========================================================================
+   LOGIN PAGE
+   ========================================================================== */
+function initLoginPage() {
+  var form = document.getElementById("login-form");
+  if (!form) { return; }
+
+  // Already signed in? Go straight to the dashboard.
+  if (getSession()) {
+    window.location.replace("dashboard.html");
+    return;
+  }
+
+  var emailInput = document.getElementById("login-email");
+  var passwordInput = document.getElementById("login-password");
+  var rememberInput = document.getElementById("login-remember");
+  var submitButton = document.getElementById("login-submit");
+
+  // Pre-fill the email remembered from a previous "Remember me" login.
+  try {
+    var remembered = localStorage.getItem("fainext_remember_email");
+    if (remembered) {
+      emailInput.value = remembered;
+      rememberInput.checked = true;
+    }
+  } catch (e) { /* ignore */ }
+
+  // "Forgot password?" - prototype message only, no real reset flow.
+  var forgot = document.getElementById("forgot-link");
+  if (forgot) {
+    forgot.addEventListener("click", function (event) {
+      event.preventDefault();
+      showAlert("login-alert",
+        "Password reset is not available in this prototype. " +
+        "Please contact support@fainext.rw.", "info");
+    });
+  }
+
+  // Clear errors while the user types
+  emailInput.addEventListener("input", function () { setFieldError("login-email", ""); });
+  passwordInput.addEventListener("input", function () { setFieldError("login-password", ""); });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    hideAlert("login-alert");
+
+    var email = emailInput.value.trim();
+    var password = passwordInput.value;
+    var valid = true;
+
+    // Field validation
+    if (!email) {
+      setFieldError("login-email", "Email is required");
+      valid = false;
+    } else if (!isValidEmail(email)) {
+      setFieldError("login-email", "Enter a valid email address");
+      valid = false;
+    } else {
+      setFieldError("login-email", "");
+    }
+
+    if (!password) {
+      setFieldError("login-password", "Password is required");
+      valid = false;
+    } else {
+      setFieldError("login-password", "");
+    }
+
+    if (!valid) { return; }
+
+    // Look the user up and compare password hashes
+    submitButton.disabled = true;
+    var user = findUserByEmail(email);
+
+    hashPassword(password).then(function (hash) {
+      if (!user || user.passwordHash !== hash) {
+        submitButton.disabled = false;
+        showAlert("login-alert", "Invalid email or password", "error");
+        return;
+      }
+
+      // Success - store the session and remember the email if asked
+      setSession(user, rememberInput.checked);
+      try {
+        if (rememberInput.checked) {
+          localStorage.setItem("fainext_remember_email", user.email);
+        } else {
+          localStorage.removeItem("fainext_remember_email");
+        }
+      } catch (e) { /* ignore */ }
+
+      window.location.href = "dashboard.html";
+    });
+  });
+}
+
+/* ==========================================================================
+   Boot - each init exits quietly if its page is not the current one
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  initPasswordToggles();
+  initLoginPage();
+  initRegisterPage();
+});
