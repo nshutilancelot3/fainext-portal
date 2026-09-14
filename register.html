@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account &middot; Fainext Client Portal</title>
+  <meta name="description" content="Create your Fainext client portal account.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Same two-column layout as the login page -->
+  <main class="auth">
+
+    <!-- Left: blue brand panel -->
+    <section class="auth-brand">
+      <a class="logo logo--light" href="index.html">
+        <span class="logo-mark"></span> Fainext
+      </a>
+
+      <h1>Open your Fainext account</h1>
+      <p>
+        Create a free client portal account to follow your money in and out,
+        pay bills and keep every receipt in one organised place.
+      </p>
+
+      <ul class="auth-points">
+        <li>Takes less than a minute to set up</li>
+        <li>Works on your phone and your laptop</li>
+        <li>Your data stays on your own device in this demo</li>
+      </ul>
+
+      <p class="auth-brand-footer">&copy; 2026 Fainext Ltd &middot; Kigali, Rwanda</p>
+    </section>
+
+    <!-- Right: registration form -->
+    <section class="auth-form-side">
+      <div class="auth-card">
+        <a class="logo" href="index.html">
+          <span class="logo-mark"></span> Fainext
+        </a>
+
+        <h2>Create account</h2>
+        <p class="subtitle">Fill in your details to get started.</p>
+
+        <!-- Page-level alert (success / storage error) -->
+        <div id="register-alert" class="alert" hidden></div>
+
+        <form id="register-form" novalidate>
+          <!-- Full name -->
+          <div class="field">
+            <label for="reg-name">Full name</label>
+            <input type="text" id="reg-name" name="fullName"
+                   placeholder="Nshuti Lancelot" autocomplete="name">
+            <span class="error-text" id="reg-name-error"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label for="reg-email">Email address</label>
+            <input type="email" id="reg-email" name="email"
+                   placeholder="you@example.com" autocomplete="email">
+            <span class="error-text" id="reg-email-error"></span>
+          </div>
+
+          <!-- Rwandan phone number -->
+          <div class="field">
+            <label for="reg-phone">Phone number</label>
+            <input type="tel" id="reg-phone" name="phone"
+                   placeholder="0788123456" inputmode="numeric"
+                   maxlength="10" autocomplete="tel">
+            <span class="error-text" id="reg-phone-error"></span>
+            <span class="hint">Rwandan format: 10 digits starting with 07</span>
+          </div>
+
+          <!-- Password + live strength bar -->
+          <div class="field">
+            <label for="reg-password">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="reg-password" name="password"
+                     placeholder="At least 8 characters" autocomplete="new-password">
+              <button type="button" class="toggle-password"
+                      data-target="reg-password" aria-label="Show password">Show</button>
+            </div>
+
+            <div class="strength" aria-hidden="true">
+              <div class="strength-track">
+                <div class="strength-fill" id="strength-fill"></div>
+              </div>
+              <div class="strength-label" id="strength-label"></div>
+            </div>
+
+            <span class="error-text" id="reg-password-error"></span>
+            <span class="hint">Must include 1 uppercase letter and 1 number.</span>
+          </div>
+
+          <!-- Confirm password -->
+          <div class="field">
+            <label for="reg-confirm">Confirm password</label>
+            <div class="password-wrap">
+              <input type="password" id="reg-confirm" name="confirmPassword"
+                     placeholder="Repeat your password" autocomplete="new-password">
+              <button type="button" class="toggle-password"
+                      data-target="reg-confirm" aria-label="Show password">Show</button>
+            </div>
+            <span class="error-text" id="reg-confirm-error"></span>
+          </div>
+
+          <!-- Terms -->
+          <div class="field">
+            <label class="check-row" for="reg-terms">
+              <input type="checkbox" id="reg-terms" name="terms">
+              I agree to the terms and conditions
+            </label>
+            <span class="error-text" id="reg-terms-error"></span>
+          </div>
+
+          <button type="submit" id="register-submit" class="btn btn--block">
+            Create account
+          </button>
+        </form>
+
+        <p class="auth-switch">
+          Already have an account? <a href="index.html">Sign in</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
