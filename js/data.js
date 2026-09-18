@@ -46,3 +46,39 @@ var FAINEXT_RAW_TRANSACTIONS = [
   { daysAgo: 150, description: "Laptop repair - Kigali Computer", type: "out", method: "Card",         amount:  85000, status: "Completed" }
 ];
 
+/* ==========================================================================
+   Date helpers
+   ========================================================================== */
+
+/* Today at midnight local time - avoids time-of-day drift in comparisons. */
+function todayAtMidnight() {
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/* Format a Date as "YYYY-MM-DD" using local time (toISOString would shift). */
+function toISODate(date) {
+  var y = date.getFullYear();
+  var m = String(date.getMonth() + 1).padStart(2, "0");
+  var d = String(date.getDate()).padStart(2, "0");
+  return y + "-" + m + "-" + d;
+}
+
+/* Friendly display date, e.g. "08 Oct 2026". */
+function formatDisplayDate(isoDate) {
+  var parts = isoDate.split("-");
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return parts[2] + " " + months[Number(parts[1]) - 1] + " " + parts[0];
+}
+
+/* ==========================================================================
+   Money helper - "RWF 1,250,000"
+   ========================================================================== */
+function formatRWF(amount) {
+  var rounded = Math.round(Math.abs(amount));
+  var withCommas = String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return "RWF " + withCommas;
+}
+
