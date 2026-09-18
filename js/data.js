@@ -82,3 +82,37 @@ function formatRWF(amount) {
   return "RWF " + withCommas;
 }
 
+/* ==========================================================================
+   Build the final transaction list (dates + references), newest first
+   ========================================================================== */
+function buildTransactions() {
+  var base = todayAtMidnight();
+
+  var list = FAINEXT_RAW_TRANSACTIONS.map(function (row, index) {
+    var d = new Date(base.getTime());
+    d.setDate(d.getDate() - row.daysAgo);
+
+    return {
+      id: index + 1,
+      reference: "FNX-" + (10240 + (FAINEXT_RAW_TRANSACTIONS.length - index) * 7),
+      date: toISODate(d),
+      description: row.description,
+      type: row.type,
+      method: row.method,
+      amount: row.amount,
+      status: row.status
+    };
+  });
+
+  // Newest first; stable tie-break on reference so the order never wobbles.
+  list.sort(function (a, b) {
+    if (a.date === b.date) { return a.id - b.id; }
+    return a.date < b.date ? 1 : -1;
+  });
+
+  return list;
+}
+
+/* Shared, ready-to-use dataset for both app pages. */
+var FAINEXT_TRANSACTIONS = buildTransactions();
+
