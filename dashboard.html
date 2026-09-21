@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard &middot; Fainext Client Portal</title>
+  <meta name="description" content="Fainext client portal dashboard - balance, activity and spending.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Top navigation ===== -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="dashboard.html">
+        <span class="logo-mark"></span> Fainext
+      </a>
+
+      <nav class="nav-links">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="transactions.html">Transactions</a>
+      </nav>
+
+      <div class="nav-user">
+        <span class="avatar" id="nav-avatar">--</span>
+        <span class="nav-name" id="nav-name">&nbsp;</span>
+        <button type="button" id="logout-btn" class="btn btn--ghost btn--sm">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- ===== Greeting ===== -->
+    <div class="page-head">
+      <h1 id="greeting">Welcome</h1>
+      <p class="muted" id="today-date">&nbsp;</p>
+    </div>
+
+    <!-- ===== Summary cards ===== -->
+    <section class="stats">
+      <div class="card stat">
+        <div class="stat-label"><span class="dot"></span> Total balance</div>
+        <div class="stat-value" id="stat-balance">RWF 0</div>
+        <div class="stat-note">Available across all methods</div>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-label"><span class="dot dot--green"></span> Money in</div>
+        <div class="stat-value" id="stat-in">RWF 0</div>
+        <div class="stat-note"><span class="js-month-name">This month</span></div>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-label"><span class="dot dot--red"></span> Money out</div>
+        <div class="stat-value" id="stat-out">RWF 0</div>
+        <div class="stat-note"><span class="js-month-name">This month</span></div>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-label"><span class="dot dot--accent"></span> Transactions</div>
+        <div class="stat-value" id="stat-count">0</div>
+        <div class="stat-note">Last 6 months</div>
+      </div>
+    </section>
+
+    <!-- ===== Chart + quick actions ===== -->
+    <section class="grid-2">
+
+      <!-- Spending bar chart, built from plain divs -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Spending - last 6 months</h2>
+          <span class="muted" style="font-size:.8rem">Completed money out</span>
+        </div>
+        <div class="chart" id="chart"></div>
+      </div>
+
+      <!-- Quick actions (prototype placeholders) -->
+      <div class="card">
+        <div class="card-head"><h2>Quick actions</h2></div>
+
+        <div id="action-message" class="alert" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn" data-action="Send Money">Send Money</button>
+          <button type="button" class="btn btn--accent" data-action="Pay Bill">Pay Bill</button>
+          <button type="button" class="btn btn--ghost" data-action="Download Statement">
+            Download Statement
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===== Recent activity ===== -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Recent activity</h2>
+        <a href="transactions.html">View all</a>
+      </div>
+
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th class="num">Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recent-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <p class="foot-note">
+    Fainext client portal - front-end prototype. Sample data only.
+  </p>
+
+  <!-- Order matters: session helpers, then data, then page logic -->
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
