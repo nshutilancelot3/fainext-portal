@@ -116,3 +116,37 @@ function buildTransactions() {
 /* Shared, ready-to-use dataset for both app pages. */
 var FAINEXT_TRANSACTIONS = buildTransactions();
 
+/* ==========================================================================
+   Summary totals used by the dashboard cards
+   ========================================================================== */
+function calculateSummary(transactions) {
+  var now = todayAtMidnight();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+
+  var moneyIn = 0;       // completed money in, current calendar month
+  var moneyOut = 0;      // completed money out, current calendar month
+  var balance = FAINEXT_OPENING_BALANCE;
+
+  transactions.forEach(function (t) {
+    if (t.status !== "Completed") { return; }   // pending/failed never move money
+
+    // Running balance over the whole history
+    balance += (t.type === "in" ? t.amount : -t.amount);
+
+    var parts = t.date.split("-");
+    var sameMonth = Number(parts[0]) === thisYear && Number(parts[1]) - 1 === thisMonth;
+
+    if (sameMonth) {
+      if (t.type === "in") { moneyIn += t.amount; } else { moneyOut += t.amount; }
+    }
+  });
+
+  return {
+    balance: balance,
+    moneyIn: moneyIn,
+    moneyOut: moneyOut,
+    count: transactions.length
+  };
+}
+
