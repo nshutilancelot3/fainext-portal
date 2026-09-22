@@ -448,6 +448,26 @@ function initRegisterPage() {
 }
 
 /* ==========================================================================
+   Navbar shared by the dashboard and transactions pages
+   ========================================================================== */
+function initAppShell(session) {
+  // Avatar initials + name
+  var avatar = document.getElementById("nav-avatar");
+  var name = document.getElementById("nav-name");
+  if (avatar) { avatar.textContent = getInitials(session.fullName); }
+  if (name) { name.textContent = session.fullName; }
+
+  // Logout clears the session and returns to the login page
+  var logout = document.getElementById("logout-btn");
+  if (logout) {
+    logout.addEventListener("click", function () {
+      clearSession();
+      window.location.href = "index.html";
+    });
+  }
+}
+
+/* ==========================================================================
    Boot - each init exits quietly if its page is not the current one
    ========================================================================== */
 document.addEventListener("DOMContentLoaded", function () {
