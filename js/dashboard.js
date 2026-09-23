@@ -27,6 +27,25 @@ function formatLongDate(date) {
          date.getFullYear();
 }
 
+/* --- Summary cards ------------------------------------------------------- */
+function renderSummary(transactions) {
+  var summary = calculateSummary(transactions);
+
+  document.getElementById("stat-balance").textContent = formatRWF(summary.balance);
+  document.getElementById("stat-in").textContent = formatRWF(summary.moneyIn);
+  document.getElementById("stat-out").textContent = formatRWF(summary.moneyOut);
+  document.getElementById("stat-count").textContent = String(summary.count);
+
+  // Current month name on the two "this month" cards
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+  var monthName = monthNames[new Date().getMonth()];
+  var notes = document.querySelectorAll(".js-month-name");
+  Array.prototype.forEach.call(notes, function (node) {
+    node.textContent = monthName;
+  });
+}
+
 /* ==========================================================================
    Boot
    ========================================================================== */
