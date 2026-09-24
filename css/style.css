@@ -455,3 +455,36 @@ img, svg { max-width: 100%; }
   margin-bottom: 1.25rem;
 }
 
+/* --- CSS bar chart ------------------------------------------------------- */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  height: 220px;
+  padding-top: .5rem;
+}
+.chart-col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  gap: .4rem;
+}
+.chart-amount { font-size: .72rem; font-weight: 600; color: var(--text-muted); }
+.chart-bar {
+  width: 100%;
+  max-width: 54px;
+  min-height: 4px;
+  background: linear-gradient(180deg, var(--primary-light), var(--primary));
+  border-radius: 8px 8px 4px 4px;
+  transition: height .4s ease;
+}
+.chart-col:hover .chart-bar { background: linear-gradient(180deg, var(--accent), #d9a000); }
+.chart-label { font-size: .76rem; color: var(--text-muted); }
+
+/* --- Quick actions ------------------------------------------------------- */
+.actions { display: flex; flex-direction: column; gap: .6rem; }
+.actions .btn { width: 100%; }
+

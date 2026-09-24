@@ -150,3 +150,33 @@ function calculateSummary(transactions) {
   };
 }
 
+/* ==========================================================================
+   Last 6 months of spending (completed money out) for the CSS bar chart
+   ========================================================================== */
+function monthlySpending(transactions) {
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var now = todayAtMidnight();
+  var buckets = [];
+
+  // Build 6 buckets: 5 months ago -> current month
+  for (var i = 5; i >= 0; i--) {
+    var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    buckets.push({
+      key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"),
+      label: months[d.getMonth()],
+      total: 0
+    });
+  }
+
+  transactions.forEach(function (t) {
+    if (t.type !== "out" || t.status !== "Completed") { return; }
+    var key = t.date.slice(0, 7);
+    for (var i = 0; i < buckets.length; i++) {
+      if (buckets[i].key === key) { buckets[i].total += t.amount; break; }
+    }
+  });
+
+  return buckets;
+}
+
