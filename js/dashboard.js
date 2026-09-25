@@ -46,6 +46,48 @@ function renderSummary(transactions) {
   });
 }
 
+/* --- Spending bar chart (plain divs, no chart library) ------------------- */
+function renderChart(transactions) {
+  var container = document.getElementById("chart");
+  if (!container) { return; }
+
+  var buckets = monthlySpending(transactions);
+  var max = buckets.reduce(function (highest, b) {
+    return Math.max(highest, b.total);
+  }, 0);
+
+  container.innerHTML = "";
+
+  buckets.forEach(function (bucket) {
+    // Bar height as a percentage of the tallest bar (min 4% so empty months show)
+    var percent = max > 0 ? Math.max(4, Math.round((bucket.total / max) * 100)) : 4;
+
+    var col = document.createElement("div");
+    col.className = "chart-col";
+    col.title = bucket.label + ": " + formatRWF(bucket.total);
+
+    var amount = document.createElement("span");
+    amount.className = "chart-amount";
+    // Compact label, e.g. "318K"
+    amount.textContent = bucket.total >= 1000
+      ? Math.round(bucket.total / 1000) + "K"
+      : String(bucket.total);
+
+    var bar = document.createElement("div");
+    bar.className = "chart-bar";
+    bar.style.height = percent + "%";
+
+    var label = document.createElement("span");
+    label.className = "chart-label";
+    label.textContent = bucket.label;
+
+    col.appendChild(amount);
+    col.appendChild(bar);
+    col.appendChild(label);
+    container.appendChild(col);
+  });
+}
+
 /* ==========================================================================
    Boot
    ========================================================================== */
