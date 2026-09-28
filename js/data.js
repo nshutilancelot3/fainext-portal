@@ -180,3 +180,53 @@ function monthlySpending(transactions) {
   return buckets;
 }
 
+/* ==========================================================================
+   Shared table rendering - used by the dashboard and the transactions page
+   ========================================================================== */
+
+/* Build one <tr> for a transaction. `options` picks which optional cells to
+   render, so the dashboard (compact) and the transactions page (full) share it. */
+function buildTransactionRow(t, options) {
+  var showReference = options && options.reference;
+  var showMethod = options && options.method;
+  var row = document.createElement("tr");
+
+  function cell(text, className) {
+    var td = document.createElement("td");
+    td.textContent = text;
+    if (className) { td.className = className; }
+    row.appendChild(td);
+    return td;
+  }
+
+  cell(formatDisplayDate(t.date));
+  if (showReference) { cell(t.reference); }
+  cell(t.description, "desc");
+
+  // Type pill
+  var typeCell = document.createElement("td");
+  var pill = document.createElement("span");
+  pill.className = "type-pill";
+  pill.textContent = t.type === "in" ? "Money In" : "Money Out";
+  typeCell.appendChild(pill);
+  row.appendChild(typeCell);
+
+  if (showMethod) { cell(t.method); }
+
+  // Amount: green with "+" for money in, red with "-" for money out
+  var amountCell = document.createElement("td");
+  amountCell.className = "num " + (t.type === "in" ? "amount-in" : "amount-out");
+  amountCell.textContent = (t.type === "in" ? "+" : "-") + formatRWF(t.amount);
+  row.appendChild(amountCell);
+
+  // Status badge
+  var statusCell = document.createElement("td");
+  var badge = document.createElement("span");
+  badge.className = "badge badge--" + t.status.toLowerCase();
+  badge.textContent = t.status;
+  statusCell.appendChild(badge);
+  row.appendChild(statusCell);
+
+  return row;
+}
+

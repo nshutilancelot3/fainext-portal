@@ -488,3 +488,64 @@ img, svg { max-width: 100%; }
 .actions { display: flex; flex-direction: column; gap: .6rem; }
 .actions .btn { width: 100%; }
 
+/* --- Tables -------------------------------------------------------------- */
+.table-scroll { overflow-x: auto; }
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+table.data th,
+table.data td {
+  padding: .7rem .6rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+table.data th {
+  font-size: .76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+  background: #fafbfc;
+}
+table.data tbody tr:hover { background: #fafbfc; }
+table.data tbody tr:last-child td { border-bottom: 0; }
+table.data td.desc { white-space: normal; min-width: 180px; }
+table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+table.data th.num { text-align: right; }
+
+.amount-in  { color: var(--green); }
+.amount-out { color: var(--red); }
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: .2rem .55rem;
+  font-size: .74rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+.badge--completed { color: var(--green);  background: var(--green-bg); }
+.badge--pending   { color: var(--yellow); background: var(--yellow-bg); }
+.badge--failed    { color: var(--red);    background: var(--red-bg); }
+
+.type-pill {
+  display: inline-block;
+  padding: .2rem .55rem;
+  font-size: .74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+/* Empty state row */
+.empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
