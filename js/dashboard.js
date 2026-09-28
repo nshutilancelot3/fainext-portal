@@ -88,6 +88,28 @@ function renderChart(transactions) {
   });
 }
 
+/* --- Recent activity: 5 latest transactions ----------------------------- */
+function renderRecentActivity(transactions) {
+  var body = document.getElementById("recent-body");
+  if (!body) { return; }
+
+  body.innerHTML = "";
+  transactions.slice(0, 5).forEach(function (t) {
+    body.appendChild(buildTransactionRow(t, { reference: false, method: false }));
+  });
+}
+
+/* --- Quick actions: prototype "Coming soon" feedback -------------------- */
+function initQuickActions() {
+  var buttons = document.querySelectorAll("[data-action]");
+  Array.prototype.forEach.call(buttons, function (button) {
+    button.addEventListener("click", function () {
+      showAlert("action-message",
+        button.getAttribute("data-action") + " is coming soon.", "info");
+    });
+  });
+}
+
 /* ==========================================================================
    Boot
    ========================================================================== */
