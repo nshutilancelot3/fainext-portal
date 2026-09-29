@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transactions &middot; Fainext Client Portal</title>
+  <meta name="description" content="Search, filter and export your Fainext transactions.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Top navigation (same as dashboard) ===== -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="dashboard.html">
+        <span class="logo-mark"></span> Fainext
+      </a>
+
+      <nav class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="transactions.html" class="active">Transactions</a>
+      </nav>
+
+      <div class="nav-user">
+        <span class="avatar" id="nav-avatar">--</span>
+        <span class="nav-name" id="nav-name">&nbsp;</span>
+        <button type="button" id="logout-btn" class="btn btn--ghost btn--sm">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="page-head">
+      <h1>Transactions</h1>
+      <p class="muted">Search, filter and export your full transaction history.</p>
+    </div>
+
+    <section class="card">
+
+      <!-- ===== Filters (all work together, update instantly) ===== -->
+      <div class="filters">
+        <div class="field">
+          <label for="filter-search">Search</label>
+          <input type="text" id="filter-search"
+                 placeholder="Description or reference...">
+        </div>
+
+        <div class="field">
+          <label for="filter-type">Type</label>
+          <select id="filter-type">
+            <option value="all">All types</option>
+            <option value="in">Money In</option>
+            <option value="out">Money Out</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="filter-status">Status</label>
+          <select id="filter-status">
+            <option value="all">All statuses</option>
+            <option value="Completed">Completed</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="filter-from">Date from</label>
+          <input type="date" id="filter-from">
+        </div>
+
+        <div class="field">
+          <label for="filter-to">Date to</label>
+          <input type="date" id="filter-to">
+        </div>
+      </div>
+
+      <!-- ===== Result count + actions ===== -->
+      <div class="filters-foot">
+        <span id="tx-count">Showing 0 of 0 transactions</span>
+        <span>
+          <button type="button" id="reset-btn" class="btn btn--ghost btn--sm">
+            Reset filters
+          </button>
+          <button type="button" id="export-btn" class="btn btn--sm">Export CSV</button>
+        </span>
+      </div>
+
+      <!-- ===== Transactions table ===== -->
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Reference</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Method</th>
+              <th class="num">Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tx-body"></tbody>
+          <tbody id="tx-empty" hidden>
+            <tr>
+              <td colspan="7" class="empty">No transactions found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+  </main>
+
+  <p class="foot-note">
+    Fainext client portal - front-end prototype. Sample data only.
+  </p>
+
+  <!-- Order matters: session helpers, then data, then page logic -->
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/transactions.js"></script>
+</body>
+</html>
