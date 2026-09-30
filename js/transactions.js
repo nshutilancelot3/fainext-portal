@@ -36,6 +36,38 @@ function filterTransactions() {
   });
 }
 
+/* --- Draw the table ------------------------------------------------------ */
+function renderTable() {
+  var body = document.getElementById("tx-body");
+  var emptyRow = document.getElementById("tx-empty");
+  var countLabel = document.getElementById("tx-count");
+
+  visibleTransactions = filterTransactions();
+
+  body.innerHTML = "";
+  visibleTransactions.forEach(function (t) {
+    body.appendChild(buildTransactionRow(t, { reference: true, method: true }));
+  });
+
+  // Empty state + result counter
+  emptyRow.hidden = visibleTransactions.length > 0;
+  countLabel.textContent = "Showing " + visibleTransactions.length +
+                           " of " + FAINEXT_TRANSACTIONS.length + " transactions";
+
+  // Export is pointless with nothing to export
+  document.getElementById("export-btn").disabled = visibleTransactions.length === 0;
+}
+
+/* --- Reset all filters --------------------------------------------------- */
+function resetFilters() {
+  filterInputs.search.value = "";
+  filterInputs.type.value = "all";
+  filterInputs.status.value = "all";
+  filterInputs.from.value = "";
+  filterInputs.to.value = "";
+  renderTable();
+}
+
 /* ==========================================================================
    Boot
    ========================================================================== */
