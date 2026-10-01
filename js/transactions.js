@@ -68,6 +68,50 @@ function resetFilters() {
   renderTable();
 }
 
+/* --- CSV export ---------------------------------------------------------- */
+
+/* Quote a value so commas and quotes inside it stay intact. */
+function csvCell(value) {
+  var text = String(value == null ? "" : value);
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function exportCSV() {
+  if (visibleTransactions.length === 0) { return; }
+
+  var headers = ["Date", "Reference", "Description", "Type",
+                 "Method", "Amount (RWF)", "Status"];
+
+  var lines = [headers.map(csvCell).join(",")];
+
+  visibleTransactions.forEach(function (t) {
+    lines.push([
+      t.date,
+      t.reference,
+      t.description,
+      t.type === "in" ? "Money In" : "Money Out",
+      t.method,
+      (t.type === "in" ? "" : "-") + t.amount,
+      t.status
+    ].map(csvCell).join(","));
+  });
+
+  // "﻿" byte-order mark keeps accents readable when opened in Excel
+  var csv = "﻿" + lines.join("\r\n");
+  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  var url = URL.createObjectURL(blob);
+
+  var link = document.createElement("a");
+  link.href = url;
+  link.download = "fainext-transactions-" + toISODate(new Date()) + ".csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // Release the blob once the browser has started the download
+  window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+}
+
 /* ==========================================================================
    Boot
    ========================================================================== */
