@@ -45,6 +45,22 @@ unchanged on GitHub Pages.
 
 ---
 
+## Tech used
+
+| Layer | Choice |
+|---|---|
+| Markup | HTML5 |
+| Styling | CSS3 (custom properties, Flexbox, Grid, media queries) |
+| Logic | Vanilla JavaScript (ES5-compatible syntax, no modules) |
+| Storage | `localStorage` |
+| Hashing | Web Crypto API — `crypto.subtle.digest("SHA-256", …)` |
+| Export | `Blob` + object URL (no library) |
+| Wireframes | Hand-written SVG |
+
+No dependencies, no package manager, no internet connection required.
+
+---
+
 ## Folder structure
 
 ```
