@@ -61,6 +61,28 @@ No dependencies, no package manager, no internet connection required.
 
 ---
 
+## How to run
+
+**Locally** — clone or download the folder, then open `index.html` in any modern
+browser. That is the whole setup.
+
+```bash
+git clone https://github.com/<your-username>/fainext-portal.git
+cd fainext-portal
+# then open index.html
+```
+
+**Live demo (GitHub Pages)**
+
+> https://&lt;your-username&gt;.github.io/fainext-portal/
+
+Replace `<your-username>` once Pages is enabled on the repository.
+
+**First time through:** there are no pre-seeded accounts. Open `register.html`
+(or click "Sign up" on the login page), create an account, then sign in with it.
+
+---
+
 ## Folder structure
 
 ```
