@@ -112,3 +112,17 @@ The three SVGs in `wireframes/` are greyscale, low-fidelity layouts matching the
 real screens. They open directly in a browser and can be dragged straight into
 Figma, where each box imports as an editable vector layer.
 
+---
+
+## Screenshots
+
+| Screen | Preview |
+|---|---|
+| Login | ![Login page](screenshots/login.png) |
+| Registration | ![Registration page](screenshots/register.png) |
+| Dashboard | ![Dashboard](screenshots/dashboard.png) |
+| Transactions | ![Transactions](screenshots/transactions.png) |
+
+> Drop your own `login.png`, `register.png`, `dashboard.png` and
+> `transactions.png` into the `screenshots/` folder to fill these in.
+
