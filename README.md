@@ -126,3 +126,14 @@ Figma, where each box imports as an editable vector layer.
 > Drop your own `login.png`, `register.png`, `dashboard.png` and
 > `transactions.png` into the `screenshots/` folder to fill these in.
 
+---
+
+## Sample data
+
+`js/data.js` holds 30 realistic transactions with Rwandan context — MTN MoMo
+top-ups, REG Cash Power, WASAC water bills, salary deposits, Simba Supermarket,
+school fees, RSSB contributions and transfers to named people.
+
+Dates are generated **relative to today**, so the dashboard and the six-month
+chart always look current no matter when the project is opened.
+
