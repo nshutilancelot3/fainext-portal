@@ -137,3 +137,21 @@ school fees, RSSB contributions and transfers to named people.
 Dates are generated **relative to today**, so the dashboard and the six-month
 chart always look current no matter when the project is opened.
 
+---
+
+## Note on authentication
+
+> **This is a front-end prototype.** Accounts live in the browser's `localStorage`
+> and never reach a server. SHA-256 hashing is included to demonstrate the pattern,
+> but unsalted client-side hashing is **not** real security: anyone with access to
+> the browser can read or modify the stored data, and clearing site data deletes
+> every account. The transaction data is sample data, not real financial records.
+> Do not use this authentication approach in production — a real build needs a
+> backend, a proper password hash (bcrypt/argon2) and server-side sessions.
+
+---
+
+## Author
+
+**Nshuti Lancelot**
+Software Developer Intern at Fainext
