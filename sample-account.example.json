@@ -1,0 +1,7 @@
+{
+  "_comment": "Test account used for local demo and screenshots. Demo data only - this portal stores accounts in localStorage and is not a real authentication system. Register this account on first run, or use your own details.",
+  "fullName": "Nshuti Lancelot",
+  "email": "demo@fainext.rw",
+  "phone": "0788123456",
+  "password": "Fainext2026"
+}

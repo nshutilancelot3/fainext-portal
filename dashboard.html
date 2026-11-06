@@ -6,6 +6,18 @@
   <title>Dashboard &middot; Fainext Client Portal</title>
   <meta name="description" content="Fainext client portal dashboard - balance, activity and spending.">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Set the theme before the first paint so dark mode never flashes white. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("fainext_theme");
+        var dark = saved === "dark" || (!saved && window.matchMedia &&
+                   window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) { /* ignore - defaults to light */ }
+    })();
+  </script>
 </head>
 <body>
 
@@ -22,6 +34,8 @@
       </nav>
 
       <div class="nav-user">
+        <button type="button" id="theme-btn" class="btn btn--ghost btn--sm"
+                aria-pressed="false" aria-label="Switch to dark mode">Dark</button>
         <span class="avatar" id="nav-avatar">--</span>
         <span class="nav-name" id="nav-name">&nbsp;</span>
         <button type="button" id="logout-btn" class="btn btn--ghost btn--sm">Logout</button>
@@ -64,7 +78,7 @@
       </div>
     </section>
 
-    <!-- ===== Chart + quick actions ===== -->
+    <!-- ===== Chart + automatic insights ===== -->
     <section class="grid-2">
 
       <!-- Spending bar chart, built from plain divs -->
@@ -76,7 +90,30 @@
         <div class="chart" id="chart"></div>
       </div>
 
-      <!-- Quick actions (prototype placeholders) -->
+      <!-- Plain-language observations generated from the data -->
+      <div class="card">
+        <div class="card-head">
+          <h2>What this means</h2>
+          <span class="muted" style="font-size:.8rem">Auto-generated</span>
+        </div>
+        <ul class="insight-list" id="insight-list"></ul>
+      </div>
+
+    </section>
+
+    <!-- ===== Category breakdown + quick actions ===== -->
+    <section class="grid-2">
+
+      <!-- Where the money actually goes, categorised automatically -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Where your money goes</h2>
+          <span class="muted" style="font-size:.8rem" id="category-total"></span>
+        </div>
+        <ul class="cat-list" id="category-list"></ul>
+      </div>
+
+      <!-- Quick actions: the statement button is real, transfers are not -->
       <div class="card">
         <div class="card-head"><h2>Quick actions</h2></div>
 
@@ -93,12 +130,58 @@
 
     </section>
 
+    <!-- ===== Savings goals ===== -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Savings goals</h2>
+        <span class="goal-head-right">
+          <span class="muted" style="font-size:.8rem" id="goal-totals"></span>
+          <button type="button" id="goal-toggle" class="btn btn--sm"
+                  aria-expanded="false" aria-controls="goal-form-panel">New goal</button>
+        </span>
+      </div>
+
+      <!-- Collapsed until "New goal" is pressed -->
+      <div id="goal-form-panel" hidden>
+        <form id="goal-form" class="goal-form" novalidate>
+          <div class="field">
+            <label for="goal-name">Goal name</label>
+            <input type="text" id="goal-name" placeholder="e.g. School fees">
+            <span class="error-text" id="goal-name-error"></span>
+          </div>
+
+          <div class="field">
+            <label for="goal-target">Target (RWF)</label>
+            <input type="number" id="goal-target" min="1" step="1000" placeholder="500000">
+            <span class="error-text" id="goal-target-error"></span>
+          </div>
+
+          <div class="field">
+            <label for="goal-deadline">Target date</label>
+            <input type="date" id="goal-deadline">
+            <span class="error-text" id="goal-deadline-error"></span>
+          </div>
+
+          <div class="field goal-form-submit">
+            <button type="submit" class="btn">Create goal</button>
+          </div>
+        </form>
+      </div>
+
+      <ul class="goal-list" id="goal-list"></ul>
+      <p class="empty" id="goal-empty" hidden>
+        No savings goals yet. Press <strong>New goal</strong> to set your first target.
+      </p>
+    </section>
+
     <!-- ===== Recent activity ===== -->
     <section class="card">
       <div class="card-head">
         <h2>Recent activity</h2>
         <a href="transactions.html">View all</a>
       </div>
+
+      <p class="muted table-hint">Select any row to see the full transaction detail.</p>
 
       <div class="table-scroll">
         <table class="data">
@@ -122,9 +205,11 @@
     Fainext client portal - front-end prototype. Sample data only.
   </p>
 
-  <!-- Order matters: session helpers, then data, then page logic -->
+  <!-- Order matters: session helpers, then data, then shared UI, then page logic -->
   <script src="js/auth.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/goals.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

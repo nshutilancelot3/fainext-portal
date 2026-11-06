@@ -6,6 +6,18 @@
   <title>Transactions &middot; Fainext Client Portal</title>
   <meta name="description" content="Search, filter and export your Fainext transactions.">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Set the theme before the first paint so dark mode never flashes white. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("fainext_theme");
+        var dark = saved === "dark" || (!saved && window.matchMedia &&
+                   window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) { /* ignore - defaults to light */ }
+    })();
+  </script>
 </head>
 <body>
 
@@ -22,6 +34,8 @@
       </nav>
 
       <div class="nav-user">
+        <button type="button" id="theme-btn" class="btn btn--ghost btn--sm"
+                aria-pressed="false" aria-label="Switch to dark mode">Dark</button>
         <span class="avatar" id="nav-avatar">--</span>
         <span class="nav-name" id="nav-name">&nbsp;</span>
         <button type="button" id="logout-btn" class="btn btn--ghost btn--sm">Logout</button>
@@ -66,6 +80,14 @@
         </div>
 
         <div class="field">
+          <label for="filter-category">Category</label>
+          <select id="filter-category">
+            <option value="all">All categories</option>
+            <!-- Remaining options are built from the data by transactions.js -->
+          </select>
+        </div>
+
+        <div class="field">
           <label for="filter-from">Date from</label>
           <input type="date" id="filter-from">
         </div>
@@ -83,11 +105,33 @@
           <button type="button" id="reset-btn" class="btn btn--ghost btn--sm">
             Reset filters
           </button>
+          <button type="button" id="print-btn" class="btn btn--ghost btn--sm">
+            Print / PDF
+          </button>
           <button type="button" id="export-btn" class="btn btn--sm">Export CSV</button>
         </span>
       </div>
 
+      <!-- ===== Totals for the current filter ===== -->
+      <div class="tx-totals" id="tx-totals" hidden>
+        <div class="tx-total">
+          <span class="tx-total-label">Money in</span>
+          <span class="tx-total-value amount-in" id="total-in">RWF 0</span>
+        </div>
+        <div class="tx-total">
+          <span class="tx-total-label">Money out</span>
+          <span class="tx-total-value amount-out" id="total-out">RWF 0</span>
+        </div>
+        <div class="tx-total">
+          <span class="tx-total-label">Net</span>
+          <span class="tx-total-value" id="total-net">RWF 0</span>
+        </div>
+        <p class="tx-total-note">Completed transactions in the current filter only.</p>
+      </div>
+
       <!-- ===== Transactions table ===== -->
+      <p class="muted table-hint">Select any row to see the full transaction detail.</p>
+
       <div class="table-scroll">
         <table class="data">
           <thead>
@@ -96,6 +140,7 @@
               <th>Reference</th>
               <th>Description</th>
               <th>Type</th>
+              <th>Category</th>
               <th>Method</th>
               <th class="num">Amount</th>
               <th>Status</th>
@@ -104,7 +149,7 @@
           <tbody id="tx-body"></tbody>
           <tbody id="tx-empty" hidden>
             <tr>
-              <td colspan="7" class="empty">No transactions found</td>
+              <td colspan="8" class="empty">No transactions found</td>
             </tr>
           </tbody>
         </table>
@@ -118,9 +163,10 @@
     Fainext client portal - front-end prototype. Sample data only.
   </p>
 
-  <!-- Order matters: session helpers, then data, then page logic -->
+  <!-- Order matters: session helpers, then data, then shared UI, then page logic -->
   <script src="js/auth.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/transactions.js"></script>
 </body>
 </html>

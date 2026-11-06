@@ -1,0 +1,10 @@
+# Video files — the documentary footage is large and belongs on YouTube,
+# not in the repository. Keep fainext-demo.mp4 locally; upload it as Unlisted.
+*.mp4
+*.mov
+*.mkv
+*.webm
+
+# OS noise
+.DS_Store
+Thumbs.db

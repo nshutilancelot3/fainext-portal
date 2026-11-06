@@ -47,6 +47,51 @@ var FAINEXT_RAW_TRANSACTIONS = [
 ];
 
 /* ==========================================================================
+   Spending categories
+   Every row is classified automatically from its description, so the user
+   never has to tag anything by hand. Money in is always "Income"; money out
+   is matched against the keyword list below, in order, first match wins.
+   ========================================================================== */
+var FAINEXT_CATEGORY_RULES = [
+  { name: "Housing & Rent",        keywords: ["rent", "apartment", "landlord"] },
+  { name: "Utilities & Bills",     keywords: ["electricity", "cash power", "reg ", "water", "wasac", "internet", "airtime"] },
+  { name: "Groceries & Shopping",  keywords: ["supermarket", "simba", "store", "market", "shop"] },
+  { name: "Transport",             keywords: ["moto", "ride", "yego", "fuel", "taxi", "bus"] },
+  { name: "Health",                keywords: ["pharmacy", "pharma", "clinic", "hospital", "medical"] },
+  { name: "Education",             keywords: ["school", "fees", "tuition", "college"] },
+  { name: "Savings & Contributions", keywords: ["rssb", "contribution", "savings", "pension"] },
+  { name: "Transfers & Cash",      keywords: ["transfer", "withdrawal", "top-up", "topup", "send"] }
+];
+
+/* Fallbacks used when nothing in the rule list matches. */
+var FAINEXT_INCOME_CATEGORY = "Income";
+var FAINEXT_OTHER_CATEGORY = "Other";
+
+/* Pick a category for one raw row. */
+function categorise(description, type) {
+  if (type === "in") { return FAINEXT_INCOME_CATEGORY; }
+
+  var text = String(description).toLowerCase();
+
+  for (var i = 0; i < FAINEXT_CATEGORY_RULES.length; i++) {
+    var rule = FAINEXT_CATEGORY_RULES[i];
+    for (var k = 0; k < rule.keywords.length; k++) {
+      if (text.indexOf(rule.keywords[k]) !== -1) { return rule.name; }
+    }
+  }
+
+  return FAINEXT_OTHER_CATEGORY;
+}
+
+/* Every category name that can appear, in a stable order for the filter list. */
+function categoryNames() {
+  var names = [FAINEXT_INCOME_CATEGORY];
+  FAINEXT_CATEGORY_RULES.forEach(function (rule) { names.push(rule.name); });
+  names.push(FAINEXT_OTHER_CATEGORY);
+  return names;
+}
+
+/* ==========================================================================
    Date helpers
    ========================================================================== */
 
@@ -100,7 +145,8 @@ function buildTransactions() {
       type: row.type,
       method: row.method,
       amount: row.amount,
-      status: row.status
+      status: row.status,
+      category: categorise(row.description, row.type)
     };
   });
 
@@ -181,6 +227,129 @@ function monthlySpending(transactions) {
 }
 
 /* ==========================================================================
+   Spending by category (completed money out, last 30 days by default)
+   Returns the biggest category first, each with its share of total spend.
+   ========================================================================== */
+function spendingByCategory(transactions, dayWindow) {
+  var windowDays = dayWindow || 30;
+  var cutoff = todayAtMidnight();
+  cutoff.setDate(cutoff.getDate() - windowDays);
+  var cutoffISO = toISODate(cutoff);
+
+  var totals = {};
+  var grandTotal = 0;
+
+  transactions.forEach(function (t) {
+    if (t.type !== "out" || t.status !== "Completed") { return; }
+    if (t.date < cutoffISO) { return; }
+
+    totals[t.category] = (totals[t.category] || 0) + t.amount;
+    grandTotal += t.amount;
+  });
+
+  var rows = Object.keys(totals).map(function (name) {
+    return {
+      name: name,
+      total: totals[name],
+      share: grandTotal > 0 ? (totals[name] / grandTotal) * 100 : 0
+    };
+  });
+
+  rows.sort(function (a, b) { return b.total - a.total; });
+
+  return { rows: rows, total: grandTotal, days: windowDays };
+}
+
+/* ==========================================================================
+   Automatic insights
+   Plain-language observations generated from the data, so the user is told
+   what changed instead of being left to read the numbers themselves.
+   Each insight is { tone, title, text } where tone drives the colour.
+   ========================================================================== */
+
+/* Completed money out for a month offset back from the current one. */
+function monthOutTotal(transactions, monthsBack) {
+  var now = todayAtMidnight();
+  var target = new Date(now.getFullYear(), now.getMonth() - monthsBack, 1);
+  var key = target.getFullYear() + "-" +
+            String(target.getMonth() + 1).padStart(2, "0");
+
+  return transactions.reduce(function (sum, t) {
+    if (t.type !== "out" || t.status !== "Completed") { return sum; }
+    return t.date.slice(0, 7) === key ? sum + t.amount : sum;
+  }, 0);
+}
+
+function buildInsights(transactions) {
+  var insights = [];
+  var summary = calculateSummary(transactions);
+
+  /* 1. Where the money actually goes ------------------------------------- */
+  var breakdown = spendingByCategory(transactions, 30);
+  if (breakdown.rows.length > 0) {
+    var top = breakdown.rows[0];
+    insights.push({
+      tone: "info",
+      title: "Biggest spend: " + top.name,
+      text: formatRWF(top.total) + " over the last 30 days - " +
+            Math.round(top.share) + "% of everything you spent."
+    });
+  }
+
+  /* 2. Is this month better or worse than last? -------------------------- */
+  var thisMonth = monthOutTotal(transactions, 0);
+  var lastMonth = monthOutTotal(transactions, 1);
+  if (lastMonth > 0) {
+    var change = ((thisMonth - lastMonth) / lastMonth) * 100;
+    var spendingLess = change < 0;
+    insights.push({
+      tone: spendingLess ? "good" : "warn",
+      title: spendingLess
+        ? "Spending down " + Math.abs(Math.round(change)) + "%"
+        : "Spending up " + Math.round(change) + "%",
+      text: "You have spent " + formatRWF(thisMonth) + " this month against " +
+            formatRWF(lastMonth) + " last month."
+    });
+  }
+
+  /* 3. Money that has not landed yet ------------------------------------- */
+  var pending = transactions.reduce(function (sum, t) {
+    return t.status === "Pending" ? sum + t.amount : sum;
+  }, 0);
+  if (pending > 0) {
+    insights.push({
+      tone: "warn",
+      title: "Pending: " + formatRWF(pending),
+      text: "Payments still clearing. They are not counted in your balance yet."
+    });
+  }
+
+  /* 4. Failed payments worth retrying ------------------------------------ */
+  var failed = transactions.filter(function (t) { return t.status === "Failed"; });
+  if (failed.length > 0) {
+    insights.push({
+      tone: "bad",
+      title: failed.length + (failed.length === 1 ? " failed payment" : " failed payments"),
+      text: "Worth retrying - the most recent was \"" + failed[0].description + "\"."
+    });
+  }
+
+  /* 5. Savings rate for the month ---------------------------------------- */
+  if (summary.moneyIn > 0) {
+    var rate = ((summary.moneyIn - summary.moneyOut) / summary.moneyIn) * 100;
+    insights.push({
+      tone: rate >= 20 ? "good" : "warn",
+      title: "Savings rate: " + Math.round(rate) + "%",
+      text: rate >= 20
+        ? "You are keeping a healthy share of what comes in this month."
+        : "Under 20% of your income is staying put this month."
+    });
+  }
+
+  return insights;
+}
+
+/* ==========================================================================
    Shared table rendering - used by the dashboard and the transactions page
    ========================================================================== */
 
@@ -189,7 +358,15 @@ function monthlySpending(transactions) {
 function buildTransactionRow(t, options) {
   var showReference = options && options.reference;
   var showMethod = options && options.method;
+  var showCategory = options && options.category;
   var row = document.createElement("tr");
+
+  /* Rows are clickable: openTransactionModal() reads this id back. */
+  row.className = "row-clickable";
+  row.setAttribute("data-tx-id", t.id);
+  row.setAttribute("tabindex", "0");
+  row.setAttribute("role", "button");
+  row.setAttribute("aria-label", "View details for " + t.description);
 
   function cell(text, className) {
     var td = document.createElement("td");
@@ -210,6 +387,15 @@ function buildTransactionRow(t, options) {
   pill.textContent = t.type === "in" ? "Money In" : "Money Out";
   typeCell.appendChild(pill);
   row.appendChild(typeCell);
+
+  if (showCategory) {
+    var categoryCell = document.createElement("td");
+    var tag = document.createElement("span");
+    tag.className = "cat-tag";
+    tag.textContent = t.category;
+    categoryCell.appendChild(tag);
+    row.appendChild(categoryCell);
+  }
 
   if (showMethod) { cell(t.method); }
 
